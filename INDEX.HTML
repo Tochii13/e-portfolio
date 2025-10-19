@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Tochukwu Caleb Okezie — Interactive Resume</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    /* ====== COLORS & THEME ====== */
+    :root{
+      --bg: #0f0f10;           /* page background */
+      --panel: #141416;        /* card background */
+      --muted: #1b1c1f;        /* subtle surfaces */
+      --ink: #e8e8ea;          /* primary text */
+      --ink-dim: #b8b8bc;      /* secondary text */
+      --accent: #8c8c93;       /* accents, borders */
+      --accent-2:#a5a5ac;      /* hover accents */
+      --link:#d1d1d6;          /* link */
+      --chip:#1a1a1d;          /* chips */
+      --good:#a6e3a1;          /* success tint (still grey-ish) */
+      --focus:#d0d0d6;         /* focus ring */
+      --shadow: 0 10px 30px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.02);
+      --radius: 18px;
+    }
+    [data-contrast="high"]{
+      --panel:#0c0c0d;
+      --muted:#101012;
+      --accent:#bdbdc2;
+      --accent-2:#ededf2;
+      --chip:#0e0e10;
+      --focus:#ffffff;
+    }
+
+    /* ====== RESET / BASE ====== */
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{
+      font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 1200px at 120% -10%, #1d1d20 0%, var(--bg) 35%) no-repeat fixed;
+      color: var(--ink);
+      letter-spacing:.2px;
+    }
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline}
+    h1,h2,h3{margin:0 0 .4rem 0; line-height:1.2}
+    h1{font-size:clamp(28px, 3vw, 40px); letter-spacing:.4px}
+    h2{font-size:clamp(18px, 2vw, 22px); color:var(--ink)}
+    h3{font-size:16px; color:var(--ink)}
+    p{margin:.25rem 0 .75rem}
+    small{color:var(--ink-dim)}
+
+    /* ====== LAYOUT ====== */
+    .wrap{
+      max-width: 1060px;
+      margin: 28px auto 80px;
+      padding: 0 18px;
+    }
+    header#top{
+      position: sticky; top: 0; z-index: 5;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(15,15,16,.9), rgba(15,15,16,.75) 40%, rgba(15,15,16,0));
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .toolbar{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      padding: 12px 18px;
+      max-width: 1060px; margin:0 auto;
+    }
+    .toolbar .btn{
+      appearance:none; border:1px solid var(--accent); background: var(--chip); color:var(--ink);
+      padding:8px 12px; border-radius: 12px; cursor:pointer; transition: .2s;
+    }
+    .toolbar .btn:hover{border-color:var(--accent-2); transform: translateY(-1px)}
+    .toolbar .btn:focus-visible{outline: 2px solid var(--focus); outline-offset:2px}
+    .toolbar .group{display:flex; gap:8px; flex-wrap:wrap}
+
+    .hero{
+      display:grid; grid-template-columns: 1fr auto; gap:16px; align-items:end;
+      padding: 24px 0 12px;
+    }
+    .nameblock{
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .chips{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{
+      font-size:12px; padding:6px 10px; border-radius:999px;
+      background:var(--chip); border:1px solid var(--accent);
+      color:var(--ink-dim)
+    }
+
+    /* ====== GRID SECTIONS ====== */
+    .grid{
+      display:grid; gap:16px; grid-template-columns: repeat(12, 1fr);
+    }
+    section.panel{
+      background: linear-gradient(180deg, var(--panel), var(--muted));
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      transition: .25s;
+    }
+    section.panel:hover{transform: translateY(-2px)}
+    .span-4{grid-column: span 4}
+    .span-8{grid-column: span 8}
+    .span-12{grid-column: 1/-1}
+
+    /* ====== EXPERIENCE / TIMELINE ====== */
+    .timeline{position:relative; margin-left:8px; padding-left:18px}
+    .timeline:before{
+      content:""; position:absolute; left:2px; top:8px; bottom:8px; width:2px;
+      background:linear-gradient(var(--accent), transparent);
+    }
+    .tl-item{position:relative; margin: 14px 0; padding-left:10px}
+    .dot{
+      position:absolute; left:-7px; top:10px; width:12px; height:12px;
+      border-radius:50%; background: linear-gradient(#fff, #cfcfd6);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.05);
+    }
+    .card{
+      background: rgba(255,255,255,.02);
+      border:1px solid var(--accent);
+      border-radius: 14px; padding: 12px;
+    }
+    details.card summary{
+      list-style:none; cursor:pointer; font-weight:600; color:var(--ink);
+    }
+    details.card summary::-webkit-details-marker{display:none}
+    details.card[open]{background: rgba(255,255,255,.04)}
+
+    /* ====== SKILLS ====== */
+    .skills-list{display:flex; gap:8px; flex-wrap:wrap}
+    .skill{border:1px solid var(--accent); border-radius:12px; padding:8px 10px; background:var(--chip); display:inline-flex; gap:8px; align-items:center}
+    .meter{inline-size:120px; block-size:6px; border-radius:4px; background:#202026; overflow:hidden}
+    .meter > i{display:block; block-size:100%; inline-size:0%; background:linear-gradient(90deg, #bfbfc6, #e0e0e8)}
+    .skill small{font-size:12px}
+
+    /* ====== PROJECTS CARDS ====== */
+    .cards{display:grid; grid-template-columns: repeat( auto-fit, minmax(260px, 1fr) ); gap:12px}
+    .proj{
+      border:1px solid var(--accent); border-radius:14px; background: rgba(255,255,255,.02);
+      padding:14px; display:flex; flex-direction:column; gap:8px; transition:.25s
+    }
+    .proj:hover{transform: translateY(-3px)}
+    .tags{display:flex; gap:6px; flex-wrap:wrap}
+    .tag{font-size:11px; padding:4px 8px; border-radius:999px; background:var(--chip); border:1px solid var(--accent); color:var(--ink-dim)}
+
+    /* ====== CONTACT BAR ====== */
+    .contact{display:flex; gap:12px; flex-wrap:wrap}
+    .linkbtn{display:inline-flex; align-items:center; gap:8px; border:1px solid var(--accent);
+      padding:8px 12px; border-radius:12px; background:var(--chip)}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:13px}
+
+    /* ====== SEARCH / FILTER ====== */
+    .filters{display:flex; gap:8px; flex-wrap:wrap; margin:.5rem 0}
+    .filter{
+      padding:6px 10px; border-radius:999px; border:1px solid var(--accent); background:var(--chip); cursor:pointer; color:var(--ink-dim)
+    }
+    .filter.active{color:var(--ink); border-color:var(--accent-2); background: rgba(255,255,255,.03)}
+
+    /* ====== PRINT ====== */
+    @media print{
+      header#top, .fun, .toolbar{display:none !important}
+      body{background:#fff; color:#111}
+      section.panel{box-shadow:none; border-color:#aaa; background:#fff}
+      a{color:#000}
+      .chip,.tag,.filter,.linkbtn{border-color:#aaa; color:#111}
+    }
+
+    /* ====== ACCESSIBILITY ====== */
+    :focus-visible{outline: 2px solid var(--focus); outline-offset: 2px}
+  </style>
+</head>
+<body>
+  <!-- ====== TOP BAR ====== -->
+  <header id="top">
+    <div class="toolbar">
+      <div class="group">
+        <button class="btn" id="contrastBtn" aria-pressed="false" title="Toggle High Contrast (Alt+C)">High Contrast</button>
+        <button class="btn" id="resumeModeBtn" aria-pressed="false" title="Toggle Compact Resume Mode (Alt+R)">Resume Mode</button>
+      </div>
+      <div class="group">
+        <button class="btn" id="printBtn" title="Print / Save as PDF (Alt+P)">Print / PDF</button>
+        <button class="btn" id="copyEmailBtn" title="Copy Email (Alt+E)">Copy Email</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ====== HERO ====== -->
+    <div class="hero">
+      <div class="nameblock">
+        <h1>Tochukwu Caleb Okezie</h1>
+        <div class="contact" role="navigation" aria-label="Contact links">
+          <a class="linkbtn" href="mailto:tcokezie@htu.edu" aria-label="Email Tochukwu">📧 <span class="mono">tcokezie@htu.edu</span></a>
+          <a class="linkbtn" href="tel:+14693156426" aria-label="Call">📞 <span class="mono">(469) 315-6426</span></a>
+          <a class="linkbtn" href="https://www.linkedin.com/in/tcokezie" target="_blank" rel="noopener">🔗 LinkedIn</a>
+          <a class="linkbtn" href="https://github.com/Tochii13" target="_blank" rel="noopener">💻 GitHub</a>
+        </div>
+        <div class="chips">
+          <span class="chip">Huston-Tillotson University · CS (’27)</span>
+          <span class="chip">Minor: Music</span>
+          <span class="chip">GPA: 3.942</span>
+        </div>
+      </div>
+      <div class="fun" aria-hidden="true">
+        <!-- Simple, dependency-free SVG "sparkline" of experience timeline -->
+        <svg width="220" height="64" viewBox="0 0 220 64" role="img" aria-label="Experience sparkline">
+          <path d="M0,54 C40,48 60,22 90,26 S140,46 170,22 220,12 220,12" fill="none" stroke="#a9a9af" stroke-width="2"/>
+          <circle cx="90" cy="26" r="3" fill="#d0d0d6"/><circle cx="170" cy="22" r="3" fill="#d0d0d6"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ====== SUMMARY ====== -->
+    <section class="panel span-12" id="summary">
+      <h2>Summary</h2>
+      <p>Software engineering student and resident assistant who builds AI-powered tools and clean web experiences. Comfortable across the stack, from FastAPI and vector search to React and Chrome extensions. I enjoy shipping useful things, mentoring peers, and turning ideas into working software.</p>
+      <div class="filters" aria-label="Quick Filters">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="ai">AI/ML</button>
+        <button class="filter" data-filter="web">Web</button>
+        <button class="filter" data-filter="leadership">Leadership</button>
+      </div>
+    </section>
+
+    <!-- ====== SKILLS ====== -->
+    <section class="panel span-12" id="skills">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+        <h2>Skills</h2>
+        <div class="group">
+          <button class="btn" id="sortAlpha">Sort A→Z</button>
+          <button class="btn" id="sortLevel">Sort by Level</button>
+        </div>
+      </div>
+      <div class="skills-list" id="skillsList" aria-live="polite"></div>
+      <small>Tip: Click a meter to animate skill level.</small>
+    </section>
+
+    <!-- ====== EXPERIENCE ====== -->
+    <section class="panel span-8" id="experience" data-tags="leadership web ai">
+      <h2>Experience</h2>
+      <div class="timeline" id="xpList">
+
+        <div class="tl-item" data-tags="leadership">
+          <i class="dot"></i>
+          <details class="card" open>
+            <summary>Resident Assistant · Huston-Tillotson University <small>Jan 2025 – Present</small></summary>
+            <ul>
+              <li>Mentor a community of 100+ residents; foster a safe, inclusive environment.</li>
+              <li>Lead programs that promote academic success and well-being.</li>
+              <li>Resolve conflicts while upholding policy and modeling leadership.</li>
+            </ul>
+          </details>
+        </div>
+
+        <div class="tl-item" data-tags="ai web">
+          <i class="dot"></i>
+          <details class="card">
+            <summary>Changing Expectations · AI Internship <small>Sep 2024 – Jan 2025</small></summary>
+            <ul>
+              <li>Automated IT workflows with custom scripts; improved efficiency by ~30%.</li>
+              <li>Built a police-response chatbot leveraging NLP and GPT models; assisted 100+ users.</li>
+              <li>Mentored 20+ high-school students building chatbots (IBM Watson).</li>
+            </ul>
+          </details>
+        </div>
+
+        <div class="tl-item" data-tags="ai web">
+          <i class="dot"></i>
+          <details class="card">
+            <summary>HeadStarterAI · Software Engineering Fellow <small>Jul 2024 – Sep 2024</small></summary>
+            <ul>
+              <li>Built an AI customer-support bot (Python, TensorFlow, LLMs via AWS Bedrock, Flask).</li>
+              <li>Upgraded rule-based architecture to generative flow; reduced manual intervention ~60% and boosted engagement ~40%.</li>
+              <li>Developed across HTML, CSS, React, Next.js, Firebase.</li>
+            </ul>
+          </details>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====== EDUCATION & AWARDS ====== -->
+    <section class="panel span-4" id="edu">
+      <h2>Education</h2>
+      <p><strong>Huston-Tillotson University</strong>, Austin, TX</p>
+      <p>B.S. Computer Science (Minor: Music) · Class of 2027</p>
+      <p>Relevant courses: Calculus, Statistics, Discrete Math, Enterprise Computing, Java I, Data Structures & Algorithms</p>
+      <h2 style="margin-top:12px">Awards</h2>
+      <ul>
+        <li>W.E.B. Du Bois Scholar</li>
+        <li>HTU Student Ambassador</li>
+        <li>Dean’s List 2024–2025</li>
+        <li>Best Graduating Student (Math & CS), DMSS 2021</li>
+      </ul>
+    </section>
+
+    <!-- ====== PROJECTS ====== -->
+    <section class="panel span-12" id="projects" data-tags="ai web">
+      <h2>Projects</h2>
+      <div class="cards" id="projCards">
+
+        <article class="proj" data-tags="ai web">
+          <header>
+            <h3>Hepa — AI Study Assistant (Chrome Extension) <small>Sep 2025 – Present</small></h3>
+          </header>
+          <p>Transform
