@@ -1,309 +1,557 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Tochukwu Caleb Okezie — Interactive Resume</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="dark light" />
-  <style>
-    /* ====== COLORS & THEME ====== */
-    :root{
-      --bg: #0f0f10;           /* page background */
-      --panel: #141416;        /* card background */
-      --muted: #1b1c1f;        /* subtle surfaces */
-      --ink: #e8e8ea;          /* primary text */
-      --ink-dim: #b8b8bc;      /* secondary text */
-      --accent: #8c8c93;       /* accents, borders */
-      --accent-2:#a5a5ac;      /* hover accents */
-      --link:#d1d1d6;          /* link */
-      --chip:#1a1a1d;          /* chips */
-      --good:#a6e3a1;          /* success tint (still grey-ish) */
-      --focus:#d0d0d6;         /* focus ring */
-      --shadow: 0 10px 30px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.02);
-      --radius: 18px;
-    }
-    [data-contrast="high"]{
-      --panel:#0c0c0d;
-      --muted:#101012;
-      --accent:#bdbdc2;
-      --accent-2:#ededf2;
-      --chip:#0e0e10;
-      --focus:#ffffff;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tochukwu “Tochi” Okezie — Interactive Resume</title>
+<meta name="description" content="Interactive resume for Tochukwu (Tochi) Caleb Okezie — Software Engineering student at Huston-Tillotson University." />
+<style>
+  :root{
+    --blue-900:#0b2a3f;
+    --blue-700:#114a72;
+    --blue-500:#1976b3;
+    --green-600:#1e8a5b;
+    --green-500:#27ae60;
+    --green-300:#7ad3a6;
 
-    /* ====== RESET / BASE ====== */
-    *{box-sizing:border-box}
-    html,body{margin:0}
-    body{
-      font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: radial-gradient(1200px 1200px at 120% -10%, #1d1d20 0%, var(--bg) 35%) no-repeat fixed;
-      color: var(--ink);
-      letter-spacing:.2px;
-    }
-    a{color:var(--link); text-decoration:none}
-    a:hover{text-decoration:underline}
-    h1,h2,h3{margin:0 0 .4rem 0; line-height:1.2}
-    h1{font-size:clamp(28px, 3vw, 40px); letter-spacing:.4px}
-    h2{font-size:clamp(18px, 2vw, 22px); color:var(--ink)}
-    h3{font-size:16px; color:var(--ink)}
-    p{margin:.25rem 0 .75rem}
-    small{color:var(--ink-dim)}
+    --bg:#0f1720;          /* deep blue-gray */
+    --panel:#121f2a;       /* card bg */
+    --panel-2:#0d1923;     /* header bg */
+    --muted:#9db7c7;
+    --text:#eef6fb;
+    --chip:#0f2a20;
 
-    /* ====== LAYOUT ====== */
-    .wrap{
-      max-width: 1060px;
-      margin: 28px auto 80px;
-      padding: 0 18px;
-    }
-    header#top{
-      position: sticky; top: 0; z-index: 5;
-      backdrop-filter: blur(6px);
-      background: linear-gradient(180deg, rgba(15,15,16,.9), rgba(15,15,16,.75) 40%, rgba(15,15,16,0));
-      border-bottom: 1px solid rgba(255,255,255,.05);
-    }
-    .toolbar{
-      display:flex; gap:10px; align-items:center; justify-content:space-between;
-      padding: 12px 18px;
-      max-width: 1060px; margin:0 auto;
-    }
-    .toolbar .btn{
-      appearance:none; border:1px solid var(--accent); background: var(--chip); color:var(--ink);
-      padding:8px 12px; border-radius: 12px; cursor:pointer; transition: .2s;
-    }
-    .toolbar .btn:hover{border-color:var(--accent-2); transform: translateY(-1px)}
-    .toolbar .btn:focus-visible{outline: 2px solid var(--focus); outline-offset:2px}
-    .toolbar .group{display:flex; gap:8px; flex-wrap:wrap}
+    --ring: rgba(39, 174, 96, 0.5);
+    --shadow: 0 10px 24px rgba(0,0,0,.35);
+    --radius: 16px;
+    --radius-sm: 12px;
+  }
 
-    .hero{
-      display:grid; grid-template-columns: 1fr auto; gap:16px; align-items:end;
-      padding: 24px 0 12px;
-    }
-    .nameblock{
-      display:flex; flex-direction:column; gap:10px;
-    }
-    .chips{display:flex; gap:8px; flex-wrap:wrap}
-    .chip{
-      font-size:12px; padding:6px 10px; border-radius:999px;
-      background:var(--chip); border:1px solid var(--accent);
-      color:var(--ink-dim)
-    }
+  /* Page layout */
+  * { box-sizing: border-box }
+  html, body { height: 100% }
+  body{
+    margin:0;
+    font: 500 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 900px at -20% -10%, rgba(25,118,179,.25), transparent 60%),
+      radial-gradient(1200px 900px at 120% -20%, rgba(39,174,96,.20), transparent 60%),
+      var(--bg);
+    overflow-x:hidden;
+  }
 
-    /* ====== GRID SECTIONS ====== */
-    .grid{
-      display:grid; gap:16px; grid-template-columns: repeat(12, 1fr);
-    }
-    section.panel{
-      background: linear-gradient(180deg, var(--panel), var(--muted));
-      border: 1px solid var(--accent);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-      transition: .25s;
-    }
-    section.panel:hover{transform: translateY(-2px)}
-    .span-4{grid-column: span 4}
-    .span-8{grid-column: span 8}
-    .span-12{grid-column: 1/-1}
+  a{ color: var(--green-300); text-decoration: none }
+  a:hover{ text-decoration: underline }
 
-    /* ====== EXPERIENCE / TIMELINE ====== */
-    .timeline{position:relative; margin-left:8px; padding-left:18px}
-    .timeline:before{
-      content:""; position:absolute; left:2px; top:8px; bottom:8px; width:2px;
-      background:linear-gradient(var(--accent), transparent);
-    }
-    .tl-item{position:relative; margin: 14px 0; padding-left:10px}
-    .dot{
-      position:absolute; left:-7px; top:10px; width:12px; height:12px;
-      border-radius:50%; background: linear-gradient(#fff, #cfcfd6);
-      box-shadow: 0 0 0 3px rgba(255,255,255,.05);
-    }
-    .card{
-      background: rgba(255,255,255,.02);
-      border:1px solid var(--accent);
-      border-radius: 14px; padding: 12px;
-    }
-    details.card summary{
-      list-style:none; cursor:pointer; font-weight:600; color:var(--ink);
-    }
-    details.card summary::-webkit-details-marker{display:none}
-    details.card[open]{background: rgba(255,255,255,.04)}
+  .wrap{
+    max-width: 1100px;
+    margin: 32px auto 80px;
+    padding: 0 20px;
+  }
 
-    /* ====== SKILLS ====== */
-    .skills-list{display:flex; gap:8px; flex-wrap:wrap}
-    .skill{border:1px solid var(--accent); border-radius:12px; padding:8px 10px; background:var(--chip); display:inline-flex; gap:8px; align-items:center}
-    .meter{inline-size:120px; block-size:6px; border-radius:4px; background:#202026; overflow:hidden}
-    .meter > i{display:block; block-size:100%; inline-size:0%; background:linear-gradient(90deg, #bfbfc6, #e0e0e8)}
-    .skill small{font-size:12px}
+  header{
+    background: linear-gradient(120deg, var(--panel-2), rgba(17,74,114,.6));
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    position: sticky; top: 12px; z-index: 5;
+    backdrop-filter: blur(6px);
+  }
 
-    /* ====== PROJECTS CARDS ====== */
-    .cards{display:grid; grid-template-columns: repeat( auto-fit, minmax(260px, 1fr) ); gap:12px}
-    .proj{
-      border:1px solid var(--accent); border-radius:14px; background: rgba(255,255,255,.02);
-      padding:14px; display:flex; flex-direction:column; gap:8px; transition:.25s
-    }
-    .proj:hover{transform: translateY(-3px)}
-    .tags{display:flex; gap:6px; flex-wrap:wrap}
-    .tag{font-size:11px; padding:4px 8px; border-radius:999px; background:var(--chip); border:1px solid var(--accent); color:var(--ink-dim)}
+  .hdr-row{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+  }
 
-    /* ====== CONTACT BAR ====== */
-    .contact{display:flex; gap:12px; flex-wrap:wrap}
-    .linkbtn{display:inline-flex; align-items:center; gap:8px; border:1px solid var(--accent);
-      padding:8px 12px; border-radius:12px; background:var(--chip)}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:13px}
+  .name{
+    display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap;
+  }
+  .name h1{
+    margin:0;
+    font-size: clamp(26px, 3vw, 34px);
+    letter-spacing:.2px;
+    line-height:1.2;
+    text-shadow: 0 2px 12px rgba(25,118,179,.35);
+  }
+  .badge{
+    font-size: 12px; font-weight:700; letter-spacing:.3px;
+    color:#bfe9d0;
+    background: linear-gradient(180deg, #123a2a, #0b2419);
+    border:1px solid #1a5b3d;
+    border-radius:999px; padding:6px 10px;
+  }
 
-    /* ====== SEARCH / FILTER ====== */
-    .filters{display:flex; gap:8px; flex-wrap:wrap; margin:.5rem 0}
-    .filter{
-      padding:6px 10px; border-radius:999px; border:1px solid var(--accent); background:var(--chip); cursor:pointer; color:var(--ink-dim)
-    }
-    .filter.active{color:var(--ink); border-color:var(--accent-2); background: rgba(255,255,255,.03)}
+  .contact{
+    display:flex; gap:10px; flex-wrap:wrap; margin-top:10px
+  }
+  .chip{
+    display:inline-flex; align-items:center; gap:8px;
+    color:#dff6ee;
+    background: linear-gradient(180deg, #0c2a1d, #081c14);
+    border:1px solid rgba(39,174,96,.35);
+    padding:8px 12px; border-radius:999px; font-size:13px
+  }
+  .chip button, .chip a{
+    color:inherit; background:none; border:0; padding:0; cursor:pointer; font:inherit; text-decoration:none;
+  }
 
-    /* ====== PRINT ====== */
-    @media print{
-      header#top, .fun, .toolbar{display:none !important}
-      body{background:#fff; color:#111}
-      section.panel{box-shadow:none; border-color:#aaa; background:#fff}
-      a{color:#000}
-      .chip,.tag,.filter,.linkbtn{border-color:#aaa; color:#111}
-    }
+  .controls{
+    display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end
+  }
+  .btn{
+    background: linear-gradient(180deg, var(--blue-700), var(--blue-900));
+    border:1px solid rgba(255,255,255,.08);
+    color:#e8f6ff; padding:10px 14px;
+    border-radius:10px; cursor:pointer; font-weight:700;
+    box-shadow: 0 8px 20px rgba(17,74,114,.35);
+  }
+  .btn.secondary{
+    background: linear-gradient(180deg, #123a2a, #0b2419);
+    box-shadow: 0 8px 20px rgba(39,174,96,.25);
+  }
+  .btn:hover{ filter: brightness(1.06) }
+  .btn:focus{ outline:2px solid var(--ring); outline-offset:2px }
 
-    /* ====== ACCESSIBILITY ====== */
-    :focus-visible{outline: 2px solid var(--focus); outline-offset: 2px}
-  </style>
+  /* Sidebar + content grid */
+  .grid{
+    display:grid; gap: 16px; margin-top:16px;
+    grid-template-columns: 300px 1fr;
+  }
+  @media (max-width: 980px){ .grid{ grid-template-columns: 1fr } }
+
+  .card{
+    background: linear-gradient(180deg, rgba(18,31,42,.9), rgba(10,22,31,.9));
+    border:1px solid rgba(255,255,255,.06);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+
+  .card h2{
+    margin:0 0 10px; font-size: 18px; letter-spacing:.3px; color:#cfe8ff
+  }
+
+  .pill{
+    display:inline-block; margin:6px 6px 0 0; padding:8px 10px; border-radius:999px;
+    background: #0b1d28; border:1px solid rgba(25,118,179,.35); color:#d9f0ff; font-size:13px
+  }
+
+  .kvs{ margin: 10px 0 0; color: var(--muted); font-size: 14px }
+  .kvs b{ color:#d7f3e7 }
+
+  /* Section items */
+  .section{ margin-top: 16px }
+  .item{
+    border:1px solid rgba(255,255,255,.06);
+    border-radius: var(--radius-sm);
+    background: #0c1620;
+    overflow: clip;
+    margin-bottom: 12px;
+  }
+  .item header{
+    position: relative; top: 0; box-shadow:none; padding:16px; border-radius:0; background: linear-gradient(180deg, #0e1b26, #0b1620);
+  }
+  .item header .row{
+    display:grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start;
+  }
+  .role{ font-weight: 800; color:#e8f4ff }
+  .org{ color: #9ad4ff }
+  .meta{ color: var(--muted); font-size: 14px }
+  .toggle{
+    background: #0b2419; color:#dff6ee; border:1px solid rgba(39,174,96,.35);
+    padding:8px 10px; border-radius:10px; cursor:pointer; font-weight:700;
+  }
+  .content{ padding: 0 16px 16px; display:none }
+  .content.open{ display:block }
+  .content ul{ margin:8px 0 0 20px }
+  .content li{ margin:6px 0 }
+
+  /* Filters & search */
+  .filter-bar{
+    display:flex; gap:10px; flex-wrap:wrap; margin: -6px 0 10px;
+  }
+  .filter-bar input[type="search"]{
+    flex:1 1 260px; min-width: 200px;
+    background: #0a1620; color: var(--text);
+    border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding:10px 12px;
+  }
+  .tag{
+    border:1px solid rgba(25,118,179,.35);
+    background:#0a1d2a; color:#d9f0ff; padding:8px 10px; border-radius:999px; cursor:pointer; user-select:none;
+  }
+  .tag.active{ background:#0c2a1d; border-color: rgba(39,174,96,.55); color:#dff6ee }
+
+  /* Timeline accent */
+  .timeline{ position: relative; padding-left: 22px }
+  .timeline::before{
+    content:""; position:absolute; left:8px; top: 10px; bottom: 10px;
+    width:2px; background: linear-gradient(180deg, var(--blue-500), transparent);
+  }
+  .item::before{
+    content:""; position:absolute; margin-left: 10px; margin-top:16px;
+    width:10px; height:10px; border-radius:999px; background: var(--green-500); box-shadow: 0 0 0 3px rgba(39,174,96,.25)
+  }
+
+  /* Footer actions */
+  footer{
+    margin-top: 20px; text-align:center; color: var(--muted); font-size:14px
+  }
+  .kbd{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    border:1px solid rgba(255,255,255,.15);
+    background:#0a1620; padding:2px 6px; border-radius:6px; font-size: 12px; color:#bcd7e7
+  }
+</style>
 </head>
 <body>
-  <!-- ====== TOP BAR ====== -->
-  <header id="top">
-    <div class="toolbar">
-      <div class="group">
-        <button class="btn" id="contrastBtn" aria-pressed="false" title="Toggle High Contrast (Alt+C)">High Contrast</button>
-        <button class="btn" id="resumeModeBtn" aria-pressed="false" title="Toggle Compact Resume Mode (Alt+R)">Resume Mode</button>
+<div class="wrap" id="top">
+
+  <!-- ===== Header ===== -->
+  <header aria-label="Header">
+    <div class="hdr-row">
+      <div class="name">
+        <h1>Tochukwu “Tochi” Caleb Okezie</h1>
+        <span class="badge">Software Engineering Student · HTU ’27</span>
+        <div class="contact" role="list">
+          <span class="chip" role="listitem">📧 <button id="copyEmail" title="Copy email">tcokezie@htu.edu</button></span>
+          <span class="chip" role="listitem">📱 <a href="tel:+14693156426" title="Call">(469)-315-6426</a></span>
+          <span class="chip" role="listitem">🔗 <a href="#" id="ln" title="LinkedIn">LinkedIn</a></span>
+          <span class="chip" role="listitem">💻 <a href="#" id="gh" title="GitHub">GitHub</a></span>
+        </div>
       </div>
-      <div class="group">
-        <button class="btn" id="printBtn" title="Print / Save as PDF (Alt+P)">Print / PDF</button>
-        <button class="btn" id="copyEmailBtn" title="Copy Email (Alt+E)">Copy Email</button>
+      <div class="controls">
+        <button class="btn secondary" id="toggleAll">Expand all</button>
+        <button class="btn" id="printBtn">Save/Print PDF</button>
       </div>
     </div>
+    <div class="kvs">Focus: <b>Backend & AI</b> · Comfortable with <b>Python, JS/TS, Swift, Java, C++</b> · Values <b>clarity, iteration, impact</b></div>
   </header>
 
-  <main class="wrap">
+  <!-- ===== Body Grid ===== -->
+  <div class="grid" id="grid">
 
-    <!-- ====== HERO ====== -->
-    <div class="hero">
-      <div class="nameblock">
-        <h1>Tochukwu Caleb Okezie</h1>
-        <div class="contact" role="navigation" aria-label="Contact links">
-          <a class="linkbtn" href="mailto:tcokezie@htu.edu" aria-label="Email Tochukwu">📧 <span class="mono">tcokezie@htu.edu</span></a>
-          <a class="linkbtn" href="tel:+14693156426" aria-label="Call">📞 <span class="mono">(469) 315-6426</span></a>
-          <a class="linkbtn" href="https://www.linkedin.com/in/tcokezie" target="_blank" rel="noopener">🔗 LinkedIn</a>
-          <a class="linkbtn" href="https://github.com/Tochii13" target="_blank" rel="noopener">💻 GitHub</a>
+    <!-- ===== Sidebar ===== -->
+    <aside class="card" aria-label="Quick facts">
+      <h2>At a glance</h2>
+      <div class="kvs"><b>Education</b><br/>Huston-Tillotson University · Austin, TX<br/>B.S. Computer Science · Minor: Music<br/>GPA: 3.942 · Class of 2027</div>
+
+      <div class="section">
+        <h2>Core Skills</h2>
+        <div class="filter-bar" style="margin-top:8px">
+          <input type="search" id="skillSearch" placeholder="Search skills…" aria-label="Search skills" />
         </div>
-        <div class="chips">
-          <span class="chip">Huston-Tillotson University · CS (’27)</span>
-          <span class="chip">Minor: Music</span>
-          <span class="chip">GPA: 3.942</span>
-        </div>
-      </div>
-      <div class="fun" aria-hidden="true">
-        <!-- Simple, dependency-free SVG "sparkline" of experience timeline -->
-        <svg width="220" height="64" viewBox="0 0 220 64" role="img" aria-label="Experience sparkline">
-          <path d="M0,54 C40,48 60,22 90,26 S140,46 170,22 220,12 220,12" fill="none" stroke="#a9a9af" stroke-width="2"/>
-          <circle cx="90" cy="26" r="3" fill="#d0d0d6"/><circle cx="170" cy="22" r="3" fill="#d0d0d6"/>
-        </svg>
-      </div>
-    </div>
-
-    <!-- ====== SUMMARY ====== -->
-    <section class="panel span-12" id="summary">
-      <h2>Summary</h2>
-      <p>Software engineering student and resident assistant who builds AI-powered tools and clean web experiences. Comfortable across the stack, from FastAPI and vector search to React and Chrome extensions. I enjoy shipping useful things, mentoring peers, and turning ideas into working software.</p>
-      <div class="filters" aria-label="Quick Filters">
-        <button class="filter active" data-filter="all">All</button>
-        <button class="filter" data-filter="ai">AI/ML</button>
-        <button class="filter" data-filter="web">Web</button>
-        <button class="filter" data-filter="leadership">Leadership</button>
-      </div>
-    </section>
-
-    <!-- ====== SKILLS ====== -->
-    <section class="panel span-12" id="skills">
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
-        <h2>Skills</h2>
-        <div class="group">
-          <button class="btn" id="sortAlpha">Sort A→Z</button>
-          <button class="btn" id="sortLevel">Sort by Level</button>
+        <div id="skills">
+          <span class="pill">Python</span>
+          <span class="pill">JavaScript</span>
+          <span class="pill">C++</span>
+          <span class="pill">Java</span>
+          <span class="pill">Swift</span>
+          <span class="pill">HTML</span>
+          <span class="pill">CSS</span>
+          <span class="pill">SwiftUI</span>
+          <span class="pill">Git</span>
+          <span class="pill">OpenCV</span>
+          <span class="pill">Flask</span>
+          <span class="pill">YOLOv8</span>
+          <span class="pill">Roboflow</span>
         </div>
       </div>
-      <div class="skills-list" id="skillsList" aria-live="polite"></div>
-      <small>Tip: Click a meter to animate skill level.</small>
-    </section>
 
-    <!-- ====== EXPERIENCE ====== -->
-    <section class="panel span-8" id="experience" data-tags="leadership web ai">
-      <h2>Experience</h2>
-      <div class="timeline" id="xpList">
-
-        <div class="tl-item" data-tags="leadership">
-          <i class="dot"></i>
-          <details class="card" open>
-            <summary>Resident Assistant · Huston-Tillotson University <small>Jan 2025 – Present</small></summary>
-            <ul>
-              <li>Mentor a community of 100+ residents; foster a safe, inclusive environment.</li>
-              <li>Lead programs that promote academic success and well-being.</li>
-              <li>Resolve conflicts while upholding policy and modeling leadership.</li>
-            </ul>
-          </details>
+      <div class="section">
+        <h2>Relevant Courses</h2>
+        <div class="kvs">
+          Calculus · Statistics · Discrete Math · Enterprise Computing · Java I · Data Structures & Algorithms
         </div>
-
-        <div class="tl-item" data-tags="ai web">
-          <i class="dot"></i>
-          <details class="card">
-            <summary>Changing Expectations · AI Internship <small>Sep 2024 – Jan 2025</small></summary>
-            <ul>
-              <li>Automated IT workflows with custom scripts; improved efficiency by ~30%.</li>
-              <li>Built a police-response chatbot leveraging NLP and GPT models; assisted 100+ users.</li>
-              <li>Mentored 20+ high-school students building chatbots (IBM Watson).</li>
-            </ul>
-          </details>
-        </div>
-
-        <div class="tl-item" data-tags="ai web">
-          <i class="dot"></i>
-          <details class="card">
-            <summary>HeadStarterAI · Software Engineering Fellow <small>Jul 2024 – Sep 2024</small></summary>
-            <ul>
-              <li>Built an AI customer-support bot (Python, TensorFlow, LLMs via AWS Bedrock, Flask).</li>
-              <li>Upgraded rule-based architecture to generative flow; reduced manual intervention ~60% and boosted engagement ~40%.</li>
-              <li>Developed across HTML, CSS, React, Next.js, Firebase.</li>
-            </ul>
-          </details>
-        </div>
-
       </div>
-    </section>
 
-    <!-- ====== EDUCATION & AWARDS ====== -->
-    <section class="panel span-4" id="edu">
-      <h2>Education</h2>
-      <p><strong>Huston-Tillotson University</strong>, Austin, TX</p>
-      <p>B.S. Computer Science (Minor: Music) · Class of 2027</p>
-      <p>Relevant courses: Calculus, Statistics, Discrete Math, Enterprise Computing, Java I, Data Structures & Algorithms</p>
-      <h2 style="margin-top:12px">Awards</h2>
-      <ul>
-        <li>W.E.B. Du Bois Scholar</li>
-        <li>HTU Student Ambassador</li>
-        <li>Dean’s List 2024–2025</li>
-        <li>Best Graduating Student (Math & CS), DMSS 2021</li>
-      </ul>
-    </section>
+      <div class="section">
+        <h2>Honors & Awards</h2>
+        <ul class="kvs" style="padding-left:18px; margin:8px 0 0">
+          <li>W.E.B. Du Bois Scholar</li>
+          <li>HTU Student Ambassador</li>
+          <li>Dean’s List 2024/2025</li>
+          <li>Best Graduating Student in Math & CS (2021)</li>
+        </ul>
+      </div>
 
-    <!-- ====== PROJECTS ====== -->
-    <section class="panel span-12" id="projects" data-tags="ai web">
-      <h2>Projects</h2>
-      <div class="cards" id="projCards">
+      <div class="section">
+        <h2>Activities</h2>
+        <ul class="kvs" style="padding-left:18px; margin:8px 0 0">
+          <li>VP, Apple Coding Club</li>
+          <li>Secretary, NSBE</li>
+          <li>Member, ColorStack</li>
+          <li>Treasurer, HTU Gospel Choir</li>
+        </ul>
+      </div>
+    </aside>
 
-        <article class="proj" data-tags="ai web">
+    <!-- ===== Main Content ===== -->
+    <main>
+
+      <!-- Filters -->
+      <div class="card">
+        <h2>Quick Filter</h2>
+        <div class="filter-bar" role="group" aria-label="Section filters">
+          <button class="tag active" data-filter="all">All</button>
+          <button class="tag" data-filter="experience">Experience</button>
+          <button class="tag" data-filter="projects">Projects</button>
+          <button class="tag" data-filter="education">Education</button>
+        </div>
+        <div class="kvs">Tip: press <span class="kbd">/</span> to jump to search · press <span class="kbd">E</span> to expand/collapse all</div>
+      </div>
+
+      <!-- Experience -->
+      <section class="card timeline" data-section="experience" aria-label="Experience">
+        <h2>Experience</h2>
+
+        <article class="item">
           <header>
-            <h3>Hepa — AI Study Assistant (Chrome Extension) <small>Sep 2025 – Present</small></h3>
+            <div class="row">
+              <div>
+                <div class="role">Resident Assistant</div>
+                <div class="org">Huston-Tillotson University · Jan 2025 – Present</div>
+                <div class="meta">Mentorship · Programming · Crisis response</div>
+              </div>
+              <button class="toggle" aria-expanded="false">Details</button>
+            </div>
           </header>
-          <p>Transform
+          <div class="content">
+            <ul>
+              <li>Mentor and support a community of 100+ residents; foster safe, inclusive living.</li>
+              <li>Plan programs driving academic success, engagement, and well-being.</li>
+              <li>Resolve conflicts and enforce policies with empathy and consistency.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="item">
+          <header>
+            <div class="row">
+              <div>
+                <div class="role">Changing Expectations – AI Internship</div>
+                <div class="org">Sep 2024 – Jan 2025</div>
+                <div class="meta">Automation · NLP · Mentorship</div>
+              </div>
+              <button class="toggle" aria-expanded="false">Details</button>
+            </div>
+          </header>
+          <div class="content">
+            <ul>
+              <li>Deployed AI-driven automations improving IT efficiency by ~30%.</li>
+              <li>Built a police-brutality response chatbot (GPT-based) assisting 100+ users.</li>
+              <li>Mentored 20+ high-school students to ship chatbots with IBM Watson.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="item">
+          <header>
+            <div class="row">
+              <div>
+                <div class="role">Software Engineering Fellow</div>
+                <div class="org">HeadStarterAI · Jul 2024 – Sep 2024</div>
+                <div class="meta">Web · GenAI · Cloud</div>
+              </div>
+              <button class="toggle" aria-expanded="false">Details</button>
+            </div>
+          </header>
+          <div class="content">
+            <ul>
+              <li>Strengthened skills across HTML/CSS, React/Next.js, Firebase.</li>
+              <li>Engineered AI support chatbot with Python, TensorFlow, AWS Bedrock, Flask.</li>
+              <li>Integrated LLMs for dynamic flows, cutting manual intervention by 60% and improving engagement by 40%.</li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <!-- Projects -->
+      <section class="card timeline" data-section="projects" aria-label="Projects">
+        <h2>Projects</h2>
+
+        <article class="item">
+          <header>
+            <div class="row">
+              <div>
+                <div class="role">Hepa – AI Study Assistant Chrome Extension</div>
+                <div class="org">Sep 2025 – Present</div>
+                <div class="meta">React MV3 · FastAPI · Supabase (RAG) · GPT-4o · Cloudflare Workers</div>
+              </div>
+              <button class="toggle" aria-expanded="false">Details</button>
+            </div>
+          </header>
+          <div class="content">
+            <ul>
+              <li>Transforms web pages, PDFs, and lectures into notes, flashcards, and quizzes.</li>
+              <li>RAG pipeline with Supabase Vector Search for personalized recall.</li>
+              <li>Google OAuth; secure global deploy via Cloudflare Workers.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="item">
+          <header>
+            <div class="row">
+              <div>
+                <div class="role">RamZone — Full-Stack E-Commerce Platform</div>
+                <div class="org">May 2025 – Present</div>
+                <div class="meta">React · Firebase/Firestore · TailwindCSS</div>
+              </div>
+              <button class="toggle" aria-expanded="false">Details</button>
+            </div>
+          </header>
+          <div class="content">
+            <ul>
+              <li>Marketplace for campus merchandise with streamlined checkout.</li>
+              <li>Dual portals (customer/admin) with live sales analytics.</li>
+              <li>Search, cart, secure checkout, order tracking, admin dashboard.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="item">
+          <header>
+            <div class="row">
+              <div>
+                <div class="role">Chemex — AI Hazard Detection</div>
+                <div class="org">Jul 2024 – Sep 2024</div>
+                <div class="meta">YOLOv8 · CV · Real-time alerts</div>
+              </div>
+              <button class="toggle" aria-expanded="false">Details</button>
+            </div>
+          </header>
+          <div class="content">
+            <ul>
+              <li>Trained model to detect hazardous materials/misplaced lab equipment (~90% accuracy).</li>
+              <li>Smart alerts with real-time recognition; 40% faster inference after tuning.</li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <!-- Education (kept small; details expand) -->
+      <section class="card" data-section="education" aria-label="Education">
+        <h2>Education</h2>
+        <article class="item">
+          <header>
+            <div class="row">
+              <div>
+                <div class="role">B.S. Computer Science · Minor: Music</div>
+                <div class="org">Huston-Tillotson University, Austin, TX · Class of 2027 · GPA 3.942</div>
+              </div>
+              <button class="toggle" aria-expanded="false">Details</button>
+            </div>
+          </header>
+          <div class="content">
+            <ul>
+              <li>Coursework: Calculus, Statistics, Discrete Math, Enterprise Computing, Java I, DSA.</li>
+              <li>Scholarships/Honors: W.E.B. Du Bois Scholar; Dean’s List 2024/2025; Student Ambassador.</li>
+              <li>Leadership: VP Apple Coding Club; NSBE Secretary; ColorStack member; Gospel Choir Treasurer.</li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <footer>
+        Press <span class="kbd">/</span> to search skills · <span class="kbd">E</span> to expand/collapse · <span class="kbd">P</span> to print · <a href="#top">Back to top ↑</a>
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  // ===== Utility selectors =====
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+  // ===== Expand/Collapse for items =====
+  const toggleButtons = $$('.toggle');
+  let expanded = false;
+  function setExpanded(state){
+    expanded = state;
+    toggleButtons.forEach(btn => {
+      const content = btn.closest('.item').querySelector('.content');
+      content.classList.toggle('open', state);
+      btn.setAttribute('aria-expanded', String(state));
+      btn.textContent = state ? 'Hide' : 'Details';
+    });
+    $('#toggleAll').textContent = expanded ? 'Collapse all' : 'Expand all';
+  }
+  toggleButtons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const content = btn.closest('.item').querySelector('.content');
+      const willOpen = !content.classList.contains('open');
+      content.classList.toggle('open', willOpen);
+      btn.setAttribute('aria-expanded', String(willOpen));
+      btn.textContent = willOpen ? 'Hide' : 'Details';
+    });
+  });
+  $('#toggleAll').addEventListener('click', ()=> setExpanded(!expanded));
+
+  // ===== Filters (All / Experience / Projects / Education) =====
+  const tags = $$('.tag');
+  tags.forEach(tag=>{
+    tag.addEventListener('click', ()=>{
+      tags.forEach(t=>t.classList.remove('active'));
+      tag.classList.add('active');
+      const f = tag.dataset.filter;
+      const sections = $$('[data-section]');
+      sections.forEach(sec=>{
+        sec.style.display = (f==='all' || sec.dataset.section===f) ? '' : 'none';
+      });
+    });
+  });
+
+  // ===== Skills search (client-side filter) =====
+  const skillSearch = $('#skillSearch');
+  const skillsWrap = $('#skills');
+  const allSkills = $$('.pill', skillsWrap);
+  function filterSkills(q){
+    const s = q.trim().toLowerCase();
+    allSkills.forEach(p=>{
+      p.style.display = p.textContent.toLowerCase().includes(s) ? 'inline-block' : 'none';
+    });
+  }
+  skillSearch.addEventListener('input', e=> filterSkills(e.target.value));
+  // Keyboard focus: Press "/" to focus skills search
+  window.addEventListener('keydown', (e)=>{
+    if (e.key === '/'){
+      e.preventDefault();
+      skillSearch.focus();
+    } else if (e.key.toLowerCase() === 'e'){
+      setExpanded(!expanded);
+    } else if (e.key.toLowerCase() === 'p'){
+      window.print();
+    }
+  });
+
+  // ===== Copy email to clipboard =====
+  $('#copyEmail').addEventListener('click', async ()=>{
+    const email = 'tcokezie@htu.edu';
+    try {
+      await navigator.clipboard.writeText(email);
+      const b = $('#copyEmail');
+      const prev = b.textContent;
+      b.textContent = 'Copied!';
+      setTimeout(()=> b.textContent = prev, 1200);
+    } catch {
+      alert('Email: ' + email);
+    }
+  });
+
+  // ===== Print to PDF =====
+  $('#printBtn').addEventListener('click', ()=> window.print());
+
+  // ===== Replace placeholders for LinkedIn/GitHub if you want =====
+  // Example: document.getElementById('ln').href = 'https://www.linkedin.com/in/your-handle';
+  // Example: document.getElementById('ln').textContent = 'linkedin.com/in/your-handle';
+  // Example: document.getElementById('gh').href = 'https://github.com/your-handle';
+  // Example: document.getElementById('gh').textContent = 'github.com/your-handle';
+</script>
+</body>
+</html>
